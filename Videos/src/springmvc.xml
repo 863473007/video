@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+     xmlns="http://www.springframework.org/schema/beans" 
+     xmlns:context="http://www.springframework.org/schema/context" 
+     xmlns:aop="http://www.springframework.org/schema/aop" 
+     xmlns:mvc="http://www.springframework.org/schema/mvc" 
+     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd ">
+
+
+   <!-- 处理器映射器 -->
+   <!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"></bean> -->
+   <!--处理器适配器-->
+   <!--  <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/> -->
+   <!-- 注解驱动去替换前面的两个处理器相关配置 -->
+   <mvc:annotation-driven/>
+   <!-- 配置扫描注解：controller -->
+   <context:component-scan
+     base-package="com.zhiyou.controller">
+   </context:component-scan>
+   <!-- 视图解析器 -->
+   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+       <property name="prefix" value="/WEB-INF/"></property>
+       <property name="suffix" value=".jsp"></property>
+   </bean>
+   
+   <!-- 配置拦截器 -->
+   <mvc:interceptors>
+       <mvc:interceptor>
+          <!-- 注意书写顺序，先编写拦截，再编写不拦截内容 -->
+          <mvc:mapping path="/**"/>
+          <mvc:exclude-mapping path="/admin.action"/>
+          <mvc:exclude-mapping path="/login.action"/>
+          <mvc:exclude-mapping path="/exit.action"/>
+          <bean class="com.zhiyou.interceptor.LoginHandleInterceptor"/>
+       
+       </mvc:interceptor>
+   
+   </mvc:interceptors>
+
+</beans>
